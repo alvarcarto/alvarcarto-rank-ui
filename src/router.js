@@ -3,6 +3,7 @@ import { createJunctionTemplate, createPageTemplate } from 'junctions'
 import LandingPage from './pages/Landing'
 import NewPollPage from './pages/NewPoll'
 import SharePollPage from './pages/SharePoll'
+import StartVotingPage from './pages/StartVoting'
 import App from './App'
 
 const AppJunctionTemplate = createJunctionTemplate({
@@ -17,13 +18,17 @@ const AppJunctionTemplate = createJunctionTemplate({
       component: () => <NewPollPage />
     }),
 
+    '/polls/:slug': createPageTemplate({
+      title: 'Sifty - Start voting',
+      params: ['slug'],
+      component: ({ page }) => <StartVotingPage page={page} />
+    }),
+
     '/polls/:slug/share': createPageTemplate({
       title: 'Sifty - Share your poll',
       params: ['slug'],
       component: ({ page }) => <SharePollPage page={page} />
     }),
-
-
   },
 
   component: App,
