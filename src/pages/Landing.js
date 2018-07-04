@@ -7,29 +7,10 @@ import Footer from '../components/Footer'
 import config from '../config'
 
 const IntroSection = styled.div`
-  padding: 60px 40px 8vw 40px;
+  padding: 60px 40px 20px 40px;
   background: #6980F3;
   color: white;
   position: relative;
-
-  &:after {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    height: 6000px;
-    transform: skewY(-6deg);
-    transform-origin: 100% 100%;
-    background: #6980F3;
-  }
-
-  @media (min-width: 600px) {
-    &:after {
-      transform: skewY(-4deg);
-    }
-  }
 `
 const Slogan = styled.p`
   margin: 0;
@@ -44,8 +25,16 @@ const BenefitsSection = styled.div`
 `
 
 const BlueTriangle = styled.img`
-  height: 40px;
+  height: 50px;
   width: 100%;
+
+  @media (min-width: 600px) {
+    height: 60px;
+  }
+
+  @media (min-width: 1200px) {
+    height: 80px;
+  }
 `
 
 class LandingPage extends Component {
@@ -56,8 +45,8 @@ class LandingPage extends Component {
         <IntroSection>
           <Slogan>Easy and intuitive way to rank set of images as a group.</Slogan>
           <Link to="/new-poll"><Button onClick={console.log}>Start</Button></Link>
-          <BlueTriangle src={`${config.PUBLIC_URL}/assets/blue-triangle.svg`} alt="" />
         </IntroSection>
+        <BlueTriangle src={`${config.PUBLIC_URL}/assets/blue-triangle.svg`} alt="" />
         <BenefitsSection>
           <h2>What is Sifty?</h2>
           <p>
