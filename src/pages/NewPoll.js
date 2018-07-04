@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
-import { Navigation } from 'junctions'
 import NavBar from '../components/NavBar'
 import Button from '../components/Button'
 import Footer from '../components/Footer'
@@ -15,6 +14,7 @@ class NewPollPage extends Component {
         name: '',
         title: '',
         description: '',
+        images: [],
       }
     }
   }
@@ -35,9 +35,22 @@ class NewPollPage extends Component {
           <input type="text" name="name" placeholder="Your name" value={this.state.form.name} onChange={this.onInputChange} />
           <input type="text" name="title" placeholder="Poll title" value={this.state.form.title} onChange={this.onInputChange} />
           <textarea placeholder="What is the best picture for our Facebook cover image?" value={this.state.form.description} onChange={this.onDescriptionChange} />
-          <a onClick={() => console.log('Select images')}>
+
+
+          <label>
             <img src="public/upload-icon.svg" alt="" />
-          </a>
+            Select images
+            <input style={{visibility: 'hidden', display: 'none'}} hidden multiple type="file" accept="image/*;capture=camera" onChange={this.onFileInputChange}/>
+          </label>
+
+          <ul>
+            {
+              _.map(this.state.form.images, (url, i) => {
+                return <li key={i}><img src={url} alt="" /></li>
+              })
+            }
+          </ul>
+
 
           <Button onClick={this.onPublishClick}>Publish</Button>
         </div>
@@ -53,6 +66,15 @@ class NewPollPage extends Component {
         [e.target.name]: e.target.value,
       }),
     });
+  }
+
+  onFileInputChange = (e) => {
+    const images = _.map(e.target.files, f => URL.createObjectURL(f))
+    this.setState({
+      form: _.extend(this.state.form, {
+        images,
+      }),
+    })
   }
 
   onDescriptionChange = (e) => {
@@ -77,10 +99,12 @@ class NewPollPage extends Component {
     })
       .then(res => {
         const poll = res.data
-        window.location = `/polls/${poll.slug}/share`
+        const { history } = this.props
+        history.push(`/polls/${poll.slug}/share`)
       })
       .catch(err => {
         console.log(err)
+        alert(err.message)
       })
   }
 }

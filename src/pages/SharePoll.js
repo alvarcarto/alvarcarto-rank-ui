@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import NavBar from '../components/NavBar'
 import Button from '../components/Button'
 import Footer from '../components/Footer'
-import { Link } from 'react-junctions'
+import { Link } from 'react-router-dom'
 
 class SharePollPage extends Component {
   render() {
     console.log(this.props)
-    const pollSlug = this.props.page.params.slug
+    const pollSlug = this.props.match.params.slug
 
     return (
       <div className="SharePollPage">
@@ -23,11 +23,11 @@ class SharePollPage extends Component {
         <div>
           <h3>Link for voting</h3>
           <p>Everyone with this link can vote.</p>
-          <Link href={`/polls/${pollSlug}`}>https://shifty.co/{pollSlug}</Link>
+          <Link to={`/polls/${pollSlug}`}>https://shifty.co/{pollSlug}</Link>
 
           <h3>Results</h3>
           <p>See the poll results in real time.</p>
-          <Link href={`/polls/${pollSlug}/results`}>https://shifty.co/{pollSlug}/results</Link>
+          <Link to={`/polls/${pollSlug}/results`}>https://shifty.co/{pollSlug}/results</Link>
         </div>
 
         <Footer />

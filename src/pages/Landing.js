@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 import NavBar from '../components/NavBar'
 import Button from '../components/Button'
 import Footer from '../components/Footer'
@@ -10,7 +11,7 @@ class LandingPage extends Component {
         <NavBar />
         <div>
           <p>Easy and intuitive way to rank set of images as a group</p>
-          <Button onClick={console.log}>Start</Button>
+          <Link to="/new-poll"><Button onClick={console.log}>Start</Button></Link>
         </div>
         <div>
           <h2>What is Sifty?</h2>
@@ -38,7 +39,7 @@ class LandingPage extends Component {
         </div>
         <div>
           <h2>Let's get started</h2>
-          <Button onClick={console.log}>Create a poll</Button>
+          <Link to="/new-poll"><Button onClick={console.log}>Create a poll</Button></Link>
         </div>
 
         <Footer />

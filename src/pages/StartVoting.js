@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
-import { Navigation } from 'junctions'
 import NavBar from '../components/NavBar'
 import Button from '../components/Button'
 import Footer from '../components/Footer'
@@ -19,7 +18,7 @@ class StartVotingPage extends Component {
   }
 
   componentDidMount() {
-    const slug = this.props.page.params.slug
+    const slug = this.props.match.params.slug
     getPoll(slug)
       .then((res) => {
         this.setState({
