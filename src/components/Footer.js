@@ -1,12 +1,25 @@
 import React from 'react';
+import styled from 'styled-components';
+import config from '../config'
 
-const Footer = (props) => <div className="Footer">
+const FooterContainer = styled.div`
+  width: 100%;
+  height: 100px;
+  background: #F5F5F5;
+  display: flex;
+  padding: 0 30px;
+  align-items: center;
+  justify-content: center;
+`
+
+const LogoImg = styled.img`
+  height: 11px;
+`
+
+const Footer = (props) => <FooterContainer>
   <a href="https://alvarcarto.com">
-    <img src="public/alvarcarto-logo.svg" alt="Alvar Carto" />
+    <LogoImg src={`${config.PUBLIC_URL}/assets/alvar-carto-logo-dark.svg`} alt="Alvar Carto" />
   </a>
-  <a href="https://facebook.com/alvarcarto">
-    <img src="public/facebook-logo.svg" alt="Facebook page" />
-  </a>
-</div>
+</FooterContainer>
 
 export default Footer;

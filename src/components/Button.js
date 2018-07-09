@@ -1,4 +1,5 @@
-import React from 'react';
+import React from 'react'
+import _ from 'lodash'
 import styled from 'styled-components'
 
 const StyledButton = styled.button`
@@ -17,13 +18,24 @@ const StyledButton = styled.button`
     transform: translate(0, -2px);
   }
 
-  ${props => props.invert && styled.css`
+  ${props => props.invert && `
     background: #6980F3;
     color: white;
   `}
+
+  ${props => props.disabled && `
+    background: #aaa;
+    color: white;
+
+    &:hover {
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: translate(0, 0);
+    }
+  `}
 `
 
-const Button = (props) => <StyledButton onClick={props.onClick}>
+const Button = (props) => <StyledButton {...props} onClick={(e) => props.disabled ? null : props.onClick(e)}>
   {props.children}
 </StyledButton>
 

@@ -14,3 +14,42 @@ html {
 *, *:before, *:after {
   box-sizing: inherit;
 }
+
+h1, h2, h3 {
+  color: #333;
+}
+
+a {
+  color: #6980F3;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover, a:visited, a:active {
+  color: #6980F3;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.appear-enter {
+  opacity: 0.01;
+  transform: scale(0.6);
+}
+
+.appear-enter.appear-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 250ms ease-in, transform 150ms ease-in;
+}
+
+.appear-exit {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.appear-exit.appear-exit-active {
+  opacity: 0.01;
+  transition: opacity 150ms ease-in, transform 100ms ease-in;
+}

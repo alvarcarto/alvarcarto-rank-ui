@@ -10,8 +10,8 @@ export function getPoll(pollSlug) {
   return axios.get(`${config.REACT_APP_API_URL}/api/polls/${pollSlug}`);
 }
 
-export function postVoteSession(pollId) {
-  return axios.post(`${config.REACT_APP_API_URL}/api/polls/${pollId}/vote-sessions`);
+export function postVoteSession(pollId, obj) {
+  return axios.post(`${config.REACT_APP_API_URL}/api/polls/${pollId}/vote-sessions`, obj);
 }
 
 export function postVote(sessionId, vote) {
