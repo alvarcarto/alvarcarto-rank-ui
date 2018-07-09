@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash'
 import styled from 'styled-components'
 import NavBar from '../components/NavBar'
+import RateScale from '../components/RateScale'
 import { getPoll } from '../util/api'
 
 const TextContainer = styled.div`
@@ -15,9 +16,8 @@ const HeaderSection = styled.div`
 `
 
 const Images = styled.ol`
-  margin-top: 60px;
   list-style: none;
-  margin: 0 0 50px 0;
+  margin: 80px 0 50px 0;
   padding: 0;
 
   img {
@@ -109,6 +109,7 @@ class PollResultsPage extends Component {
           </HeaderSection>
 
           <div>
+            <RateScale poll={poll} />
             <Images voteSessionsCount={poll.voteSessionsCount}>
               {
                 _.map(sortedTargets, (target) => {
