@@ -17,12 +17,14 @@ const HeaderSection = styled.div`
 
 const Images = styled.ol`
   list-style: none;
-  margin: 80px 0 50px 0;
+  margin: 140px 0 50px 0;
   padding: 0;
 
   img {
-    max-width: 400px;
+    max-width: 230px;
     margin: 5px;
+    border: 1px solid #6880f3;
+    border-radius: 3px;
   }
 
   li {
@@ -61,7 +63,7 @@ const Images = styled.ol`
 `
 
 const ImageStats = styled.div`
-  padding: 10px 0 0 10px;
+  padding: 4px 0 0 10px;
 
   p {
     margin: 0;
