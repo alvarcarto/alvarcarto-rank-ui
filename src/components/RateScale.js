@@ -128,7 +128,7 @@ class RateScale extends Component {
     const maxScore = _.maxBy(targets, t => t.score).score
     const range = maxScore - minScore
 
-    const left = (target.score + Math.abs(minScore)) / range * 100
+    const left = (target.score -minScore) / range * 100
     const style = {
       left: `${left}%`,
       opacity: 1,

@@ -14,8 +14,8 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route exact path="/new-poll" component={NewPollPage} />
-          <Route exact path="/polls/:slug" component={StartVotingPage} />
-          <Route exact path="/polls/:slug/share" component={SharePollPage} />
+          <Route exact path="/polls/:slug" component={SharePollPage} />
+          <Route exact path="/polls/:slug/vote" component={StartVotingPage} />
           <Route exact path="/polls/:slug/results" component={PollResultsPage} />
           <Route exact path="/polls/:slug/vote-sessions/:sessionId" component={VotePage} />
           <Route component={() => <p>404</p>} />

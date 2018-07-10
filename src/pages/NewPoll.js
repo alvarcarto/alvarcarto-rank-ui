@@ -188,7 +188,7 @@ class NewPollPage extends Component {
       .then(res => {
         const poll = res.data
         const { history } = this.props
-        history.push(`/polls/${poll.slug}/share`)
+        history.push(`/polls/${poll.slug}`)
       })
       .catch(err => {
         this.setState({ loading: false })

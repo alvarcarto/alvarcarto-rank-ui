@@ -49,11 +49,11 @@ class SharePollPage extends Component {
           <div>
             <SubHeader>Link for voting</SubHeader>
             <SmallDescription>Share this to participants. Anyone can vote with this link.</SmallDescription>
-            <Link to={`/polls/${pollSlug}`}>https://shifty.co/{pollSlug}</Link>
+            <Link to={`/polls/${pollSlug}/vote`}>https://sifty.co/polls/{pollSlug}/vote</Link>
 
             <SubHeader>Results</SubHeader>
             <SmallDescription>See the poll results in real time.</SmallDescription>
-            <Link to={`/polls/${pollSlug}/results`}>https://shifty.co/{pollSlug}/results</Link>
+            <Link to={`/polls/${pollSlug}/results`}>https://sifty.co/polls/{pollSlug}/results</Link>
           </div>
         </TextContainer>
       </div>
