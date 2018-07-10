@@ -98,7 +98,7 @@ const BenefitsList = styled.ol`
   @media (min-width: 700px) {
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
   }
 `
 
