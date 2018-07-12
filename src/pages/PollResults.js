@@ -5,6 +5,10 @@ import NavBar from '../components/NavBar'
 import RateScale from '../components/RateScale'
 import { getPoll } from '../util/api'
 
+const PageContent = styled.div`
+  padding-top: 30px;
+`
+
 const TextContainer = styled.div`
   max-width: 1000px;
   margin: 0 auto;
@@ -12,19 +16,29 @@ const TextContainer = styled.div`
 `
 
 const HeaderSection = styled.div`
-  margin: 50px 0 40px 0
+  margin: 20px 0 80px 0
+`
+const ResultsSection = styled.div`
+  h2 {
+    margin-top: 140px;
+  }
 `
 
+const ImagesSection = styled.div`
+  p {
+    margin-bottom: 40px;
+  }
+`
 const Images = styled.ol`
   list-style: none;
-  margin: 140px 0 50px 0;
+  margin: 10px 0 50px 0;
   padding: 0;
 
   img {
     max-width: 230px;
     margin: 5px;
-    border: 1px solid #6880f3;
-    border-radius: 3px;
+    border: 2px solid #6880f3;
+    border-radius: 5px;
   }
 
   li {
@@ -103,31 +117,37 @@ class PollResultsPage extends Component {
     return (
       <div className="PollResultsPage">
         <NavBar />
+        <PageContent>
+          <TextContainer>
+            <HeaderSection>
+              <h2>Results</h2>
+              <p>{this.getText(poll.voteSessionsCount)}</p>
+            </HeaderSection>
 
-        <TextContainer>
-          <HeaderSection>
-            <h2>Results</h2>
-            <p>{this.getText(poll.voteSessionsCount)}</p>
-          </HeaderSection>
+            <ResultsSection>
+              <RateScale poll={poll} />
 
-          <div>
-            <RateScale poll={poll} />
-            <Images voteSessionsCount={poll.voteSessionsCount}>
-              {
-                _.map(sortedTargets, (target) => {
-                  return <li key={target.id}>
-                    <img src={target.imageUrl} alt="" />
-                    <ImageStats>
-                      <p>Score: {target.score}</p>
-                      <p>Wins: {target.wins}</p>
-                      <p>Losses: {target.losses}</p>
-                    </ImageStats>
-                  </li>
-                })
-              }
-            </Images>
-          </div>
-        </TextContainer>
+              <ImagesSection>
+                <h2>Ranking list</h2>
+                <p>Based on everyone's votes</p>
+                <Images voteSessionsCount={poll.voteSessionsCount}>
+                  {
+                    _.map(sortedTargets, (target) => {
+                      return <li key={target.id}>
+                        <img src={target.imageUrl} alt="" />
+                        <ImageStats>
+                          <p>Score: {target.score}</p>
+                          <p>Wins: {target.wins}</p>
+                          <p>Losses: {target.losses}</p>
+                        </ImageStats>
+                      </li>
+                    })
+                  }
+                </Images>
+              </ImagesSection>
+            </ResultsSection>
+          </TextContainer>
+        </PageContent>
       </div>
     )
   }

@@ -7,6 +7,11 @@ import Button from '../components/Button'
 import Footer from '../components/Footer'
 import { postPoll } from '../util/api'
 import { uploadFile } from '../util/upload'
+import config from '../config'
+
+const PageContent = styled.div`
+  padding-top: 30px;
+`
 
 const TextContainer = styled.div`
   max-width: 1000px;
@@ -21,7 +26,7 @@ const FormSection = styled.div`
 const TextInput = styled.input`
   padding: 10px 10px;
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   border-radius: 5px;
   min-width: 300px;
   border: 1px solid #ddd;
@@ -46,10 +51,26 @@ const FormLabel = styled.label`
   font-weight: 700;
   margin-bottom: 4px;
   display: block;
+
+  span {
+    font-weight: 400;
+    font-style: italic;
+  }
 `
 
 const SelectImagesContainer = styled.div`
-  margin: 20px 0 0 0;
+  margin: 40px 0 0 0;
+
+  label {
+    display: flex;
+    height: 30px;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  label img {
+    margin-right: 5px;
+  }
 `
 
 const ImageList = styled.div`
@@ -85,46 +106,47 @@ class NewPollPage extends Component {
     return (
       <div className="NewPollPage">
         <NavBar />
-
-        <TextContainer>
-          <h2>Create a new poll</h2>
-          <p>
-            Please note that polls are deleted after a week of inactivity.
-          </p>
-        </TextContainer>
-
-        <FormSection>
+        <PageContent>
           <TextContainer>
-            <FormLabel>Your name</FormLabel>
-            <TextInput type="text" name="name" placeholder="Your name" value={this.state.form.name} onChange={this.onInputChange} />
-
-            <FormLabel>Poll title</FormLabel>
-            <TextInput type="text" name="title" placeholder="Poll title" value={this.state.form.title} onChange={this.onInputChange} />
-
-            <FormLabel>Poll description</FormLabel>
-            <TextArea placeholder="What is the best picture for our Facebook cover image?" value={this.state.form.description} onChange={this.onDescriptionChange} />
-
-            <SelectImagesContainer>
-              <label>
-                <img src="public/upload-icon.svg" alt="" />
-                <a>{this.state.form.files.length > 0 ? 'Reselect' : 'Select'} images</a>
-                <input style={{visibility: 'hidden', display: 'none'}} hidden multiple type="file" accept="image/*;capture=camera" onChange={this.onFileInputChange}/>
-              </label>
-
-              <ImageList>
-                {
-                  _.map(this.state.form.files, (f, i) => {
-                    return <img key={i} src={f.objectUrl} alt="" />
-                  })
-                }
-              </ImageList>
-            </SelectImagesContainer>
-
-            <Button disabled={!this.isFormReady() || this.state.loading} invert onClick={this.onPublishClick}>
-              { this.state.loading ? 'Publishing..' : 'Publish' }
-            </Button>
+            <h2>Create a new poll</h2>
+            <p>
+              Please note that polls are deleted after a week of inactivity.
+            </p>
           </TextContainer>
-        </FormSection>
+
+          <FormSection>
+            <TextContainer>
+              <FormLabel>Your name</FormLabel>
+              <TextInput type="text" name="name" placeholder="Your name" value={this.state.form.name} onChange={this.onInputChange} />
+
+              <FormLabel>Poll title</FormLabel>
+              <TextInput type="text" name="title" placeholder="Poll title" value={this.state.form.title} onChange={this.onInputChange} />
+
+              <FormLabel>Poll description <span>(optional)</span></FormLabel>
+              <TextArea placeholder="What is the best picture for our Facebook cover image?" value={this.state.form.description} onChange={this.onDescriptionChange} />
+
+              <SelectImagesContainer>
+                <label>
+                  <img src={`${config.PUBLIC_URL}/assets/upload-icon.svg`} alt="" />
+                  <a>{this.state.form.files.length > 0 ? 'Reselect' : 'Select'} images for poll</a>
+                  <input style={{visibility: 'hidden', display: 'none'}} hidden multiple type="file" accept="image/*;capture=camera" onChange={this.onFileInputChange}/>
+                </label>
+
+                <ImageList>
+                  {
+                    _.map(this.state.form.files, (f, i) => {
+                      return <img key={i} src={f.objectUrl} alt="" />
+                    })
+                  }
+                </ImageList>
+              </SelectImagesContainer>
+
+              <Button disabled={!this.isFormReady() || this.state.loading} invert onClick={this.onPublishClick}>
+                { this.state.loading ? 'Publishing..' : 'Publish' }
+              </Button>
+            </TextContainer>
+          </FormSection>
+        </PageContent>
       </div>
     )
   }
@@ -168,7 +190,7 @@ class NewPollPage extends Component {
 
   isFormReady() {
     const enoughImages = this.state.form.files.length > 1
-    return enoughImages && this.state.form.name && this.state.form.title && this.state.form.description
+    return enoughImages && this.state.form.name && this.state.form.title
   }
 
   onPublishClick = () => {
@@ -178,12 +200,14 @@ class NewPollPage extends Component {
 
     BPromise.map(this.state.form.files, file => uploadFile(file.formFile), { concurrency: 10 })
       .then((urls) => {
-        return postPoll({
+        const poll = {
           title: this.state.form.title,
           authorName: this.state.form.name,
           description: this.state.form.description,
           targets: _.map(urls, u => ({ imageUrl: u })),
-        })
+        }
+
+        return postPoll(_.omitBy(poll, _.isEmpty))
       })
       .then(res => {
         const poll = res.data

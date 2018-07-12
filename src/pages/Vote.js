@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
+import MdCheckCircle from 'react-icons/lib/md/check-circle'
+import Swal from 'sweetalert2'
 import NavBar from '../components/NavBar'
 import Button from '../components/Button'
 import Footer from '../components/Footer'
@@ -14,12 +16,38 @@ const Content = styled.div`
   align-items: center;
   margin-top: 30px;
 `
+const appear = keyframes`
+  0% {
+    transform: scale(0.1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`
+const IconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 
+  > * {
+    animation: ${appear} 0.5s ease-in-out;
+    animation-iteration-count: 1;
+  }
+
+  h2 {
+    color: #84dab3;
+  }
+`
 const Images = styled.ul`
-  margin-top: 60px;
+  margin: 30px 0 0 0;
   list-style: none;
   display: flex;
-  margin: 0;
   padding: 0 5px;
 
   img {
@@ -33,6 +61,18 @@ const Images = styled.ul`
   img:hover {
     border: 3px solid #6980F3;
     border-radius: 3px;
+  }
+`
+
+const CheckIcon = styled(MdCheckCircle)`
+  margin-top: 100px;
+  width: 100px;
+  height: 100px;
+  fill: #84dab3;
+
+  svg {
+    width: 100%;
+    height: 100%;
   }
 `
 
@@ -80,7 +120,14 @@ class VotePage extends Component {
 
         <Content>
           <div>
-            <h2>{this.state.finished ? 'Thank you' : 'Click the image to choose'}</h2>
+            {
+              this.state.finished
+                ? <IconContainer>
+                    <CheckIcon />
+                    <h2>Done!</h2>
+                  </IconContainer>
+                : <h2>Click the better one</h2>
+            }
           </div>
 
           {!this.state.finished ?
@@ -107,7 +154,6 @@ class VotePage extends Component {
   onImageClick = (targetId) => {
     const { sessionId } = this.props.match.params
     const { poll } = this.state
-    console.log('Post')
 
     this.setState({
       combination: { targets: [] },

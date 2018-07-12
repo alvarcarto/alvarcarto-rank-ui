@@ -34,6 +34,8 @@ const RateScaleContainer = styled.div`
   }
   li img {
     transition: transform 0.2s ease;
+    border: 2px solid #6980F3;
+    border-radius: 3px;
   }
   li img:hover {
     cursor: pointer;
@@ -48,6 +50,9 @@ const ArrowContainer = styled.div`
   p {
     font-size: 0.9rem;
     color: #666;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #6980F3;
   }
 `
 const LeftLabel = styled.p`
@@ -69,7 +74,7 @@ const ArrowLine = styled.div`
   position: absolute;
   bottom: -6px;
   height: 2px;
-  background: #bbb;
+  background: #6980F3;
   width: calc(100% - 10px);
 `
 

@@ -3,8 +3,12 @@ import _ from 'lodash'
 import styled from 'styled-components'
 import NavBar from '../components/NavBar'
 import Button from '../components/Button'
-import Footer from '../components/Footer'
+import PollInfo from '../components/PollInfo'
 import { getPoll, postVoteSession } from '../util/api'
+
+const PageContent = styled.div`
+  padding-top: 30px;
+`
 
 const TextContainer = styled.div`
   max-width: 1000px;
@@ -12,36 +16,22 @@ const TextContainer = styled.div`
   padding: 0 40px 0 40px;
 `
 
-const PollInfo = styled.div`
-  background: #f4f4f4;
-  padding: 20px 20px;
-  border-radius: 5px;
-  margin-bottom: 40px;
+const Text = styled.p`
+  margin-top: 0;
+  margin-bottom: 50px;
+  max-width: 500px;
+`
 
-  p, h4 {
-    margin: 0;
-    padding: 0;
-  }
-
-  h4 {
-    width: 120px;
-  }
-  p {
-    max-width: 400px;
-  }
-
-  div {
-    display: flex;
-  }
-  div:not(:last-child) {
-    margin-bottom: 20px;
+const FormSection = styled.div`
+  h3 {
+    margin-bottom: 10px;
   }
 `
 
 const TextInput = styled.input`
   padding: 10px 10px;
   display: block;
-  margin-bottom: 12px;
+  margin-bottom: 32px;
   border-radius: 5px;
   min-width: 300px;
   border: 1px solid #ddd;
@@ -82,31 +72,24 @@ class StartVotingPage extends Component {
     return (
       <div className="StartVotingPage">
         <NavBar />
-
-        <TextContainer>
-          <div>
-            <h2>{_.get(poll, 'authorName')} invited you to vote</h2>
-          </div>
-
-          <PollInfo>
+        <PageContent>
+          <TextContainer>
             <div>
-              <h4>Poll</h4>
-              <p>{_.get(poll, 'title')}</p>
+              <h2>{_.get(poll, 'authorName')} invited you to vote</h2>
+              <Text>You will be asked to choose the best image out of two or more options. Please
+              keep answering until you are redirected to the poll results. It will take a minute.
+              </Text>
             </div>
 
-            <div>
-              <h4>Description</h4>
-              <p>{_.get(poll, 'description')}</p>
-            </div>
-          </PollInfo>
+            <PollInfo poll={poll} />
 
-          <div>
-            <h3>What's your name?</h3>
-            <TextInput type="text" name="name" placeholder="Your name" value={this.state.form.name} onChange={this.onInputChange} />
-
-            <Button onClick={this.onStartClick}>Start</Button>
-          </div>
-        </TextContainer>
+            <FormSection>
+              <h3>What's your name?</h3>
+              <TextInput type="text" name="name" placeholder="Your name" value={this.state.form.name} onChange={this.onInputChange} />
+              <Button invert onClick={this.onStartClick}>Start</Button>
+            </FormSection>
+          </TextContainer>
+        </PageContent>
       </div>
     )
   }
