@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
 import BPromise from 'bluebird'
+import swal from 'sweetalert2'
 import NavBar from '../components/NavBar'
 import styled from 'styled-components'
 import Button from '../components/Button'
@@ -170,7 +171,11 @@ class NewPollPage extends Component {
     })
 
     if (isTooLarge) {
-      return alert('Maximum allowed file size is 4MB.')
+      return swal({
+        type: 'error',
+        title: 'Too large file',
+        text: 'Maximum allowed file size is 4MB.',
+      })
     }
 
     this.setState({
@@ -218,7 +223,11 @@ class NewPollPage extends Component {
         this.setState({ loading: false })
 
         console.error(err)
-        alert(err.message)
+        swal({
+          type: 'error',
+          title: 'Error creating a new poll',
+          text: err.message,
+        })
       })
   }
 }

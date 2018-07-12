@@ -191,7 +191,7 @@ class VotePage extends Component {
       finished: true
     })
     setTimeout(() => {
-      this.props.history.push(`/polls/${poll.id}/results`)
+      this.props.history.push(`/polls/${poll.slug}/results`)
     }, 1500)
   }
 }

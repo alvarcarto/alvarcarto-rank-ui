@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
+import swal from 'sweetalert2'
 import styled from 'styled-components'
 import NavBar from '../components/NavBar'
 import Button from '../components/Button'
@@ -62,7 +63,12 @@ class StartVotingPage extends Component {
         })
       })
       .catch((err) => {
-        alert(err)
+        console.error(err)
+        swal({
+          type: 'error',
+          title: 'Error fetching poll',
+          text: err.message,
+        })
       })
   }
 
@@ -108,6 +114,13 @@ class StartVotingPage extends Component {
     const voteSession = {
       authorName: this.state.form.name,
     }
+    if (!voteSession.authorName) {
+      return swal({
+        type: 'error',
+        title: 'Unable to start',
+        text: 'Name is a required field',
+      })
+    }
 
     postVoteSession(poll.slug, voteSession)
       .then((res) => {
@@ -117,7 +130,12 @@ class StartVotingPage extends Component {
         window.location = `/polls/${poll.slug}/vote-sessions/${id}`
       })
       .catch(err => {
-        alert(err)
+        console.error(err)
+        swal({
+          type: 'error',
+          title: 'Unable to start',
+          text: err.message,
+        })
       })
   }
 }

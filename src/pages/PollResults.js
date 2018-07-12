@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import _ from 'lodash'
+import Select from 'react-select';
 import styled from 'styled-components'
 import NavBar from '../components/NavBar'
 import RateScale from '../components/RateScale'
+import swal from 'sweetalert2'
 import { getPoll } from '../util/api'
 
 const PageContent = styled.div`
@@ -18,15 +20,26 @@ const TextContainer = styled.div`
 const HeaderSection = styled.div`
   margin: 20px 0 80px 0
 `
+const RankingSection = styled.div`
+  display: flex;
+  margin-top: 140px;
+`
 const ResultsSection = styled.div`
-  h2 {
-    margin-top: 140px;
-  }
+
 `
 
 const ImagesSection = styled.div`
+  width: 50%;
+
   p {
     margin-bottom: 40px;
+  }
+
+  :first-child {
+    padding-right: 30px;
+  }
+  :last-child {
+    padding-left: 30px;
   }
 `
 const Images = styled.ol`
@@ -84,12 +97,24 @@ const ImageStats = styled.div`
   }
 `
 
+const ComparisonHeader = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 68px;
+
+  .Select {
+    margin-left: 15px;
+    min-width: 140px;
+  }
+`
+
 class PollResultsPage extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       poll: null,
+      selectedValue: 1,
     }
   }
 
@@ -102,7 +127,12 @@ class PollResultsPage extends Component {
         })
       })
       .catch((err) => {
-        alert(err)
+        swal({
+          type: 'error',
+          title: 'Error fetching poll',
+          text: err.message,
+        })
+        console.error(err)
       })
   }
 
@@ -121,30 +151,64 @@ class PollResultsPage extends Component {
           <TextContainer>
             <HeaderSection>
               <h2>Results</h2>
-              <p>{this.getText(poll.voteSessionsCount)}</p>
+              <p>{this.getText(poll)}</p>
             </HeaderSection>
 
             <ResultsSection>
               <RateScale poll={poll} />
 
-              <ImagesSection>
-                <h2>Ranking list</h2>
-                <p>Based on everyone's votes</p>
-                <Images voteSessionsCount={poll.voteSessionsCount}>
-                  {
-                    _.map(sortedTargets, (target) => {
-                      return <li key={target.id}>
-                        <img src={target.imageUrl} alt="" />
-                        <ImageStats>
-                          <p>Score: {target.score}</p>
-                          <p>Wins: {target.wins}</p>
-                          <p>Losses: {target.losses}</p>
-                        </ImageStats>
-                      </li>
-                    })
-                  }
-                </Images>
-              </ImagesSection>
+              <RankingSection>
+                <ImagesSection>
+                  <h2>Ranking list</h2>
+                  <p>{this.getListText(poll)}</p>
+                  <Images voteSessionsCount={poll.voteSessionsCount}>
+                    {
+                      _.map(sortedTargets, (target) => {
+                        return <li key={target.id}>
+                          <img src={target.imageUrl} alt="" />
+                          <ImageStats>
+                            <p>Score: {target.score}</p>
+                            <p>Wins: {target.wins}</p>
+                            <p>Losses: {target.losses}</p>
+                          </ImageStats>
+                        </li>
+                      })
+                    }
+                  </Images>
+                </ImagesSection>
+                <ImagesSection>
+                  <ComparisonHeader>
+                    <h2>Compare to</h2>
+                    <Select
+                      name="form-field-name"
+                      value={this.state.selectedValue}
+                      onChange={this.onSelectChange}
+                      clearable={false}
+                      onBlurResetsInput={false}
+                      onSelectResetsInput={false}
+                      options={[
+                        { value: 1, label: 'Kimmo' },
+                        { value: 2, label: 'Aarne' },
+                      ]}
+                    />
+                  </ComparisonHeader>
+
+                  <Images voteSessionsCount={poll.voteSessionsCount}>
+                    {
+                      _.map(sortedTargets, (target) => {
+                        return <li key={target.id}>
+                          <img src={target.imageUrl} alt="" />
+                          <ImageStats>
+                            <p>Score: {target.score}</p>
+                            <p>Wins: {target.wins}</p>
+                            <p>Losses: {target.losses}</p>
+                          </ImageStats>
+                        </li>
+                      })
+                    }
+                  </Images>
+                </ImagesSection>
+              </RankingSection>
             </ResultsSection>
           </TextContainer>
         </PageContent>
@@ -152,15 +216,32 @@ class PollResultsPage extends Component {
     )
   }
 
-  getText(count) {
+  onSelectChange = (value) => {
+    this.setState({ selectedValue: value })
+  }
+
+  getText(poll) {
+    const count = poll.voteSessions.length
+    const names = _.map(poll.voteSessions, s => s.authorName)
+
     if (!count || count < 1) {
       return 'No votes yet. Results will appear after first vote.'
     } else if (count === 1) {
-      return `Images are in order below, first one is the winner. ${count} person has voted.`
+      return `${names[0]} has voted.`
+    } else if (count === 2) {
+      return `${_.first(names)} and ${_.last(names)} have voted.`
     }
 
+    return `${_.initial(names).join(', ')}, and ${_.last(names)} have voted.`
+  }
 
-    return `Images are in order below, first one is the winner. ${count} people have voted.`
+  getListText(poll) {
+    const count = poll.voteSessions.length
+    if (!count || count < 1 ) {
+      return 'Results will appear after first vote.'
+    }
+
+    return 'Images are in order below based on everyone\'s votes. First one is the winner.'
   }
 }
 
