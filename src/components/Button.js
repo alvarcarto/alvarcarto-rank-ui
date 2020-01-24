@@ -23,6 +23,13 @@ const StyledButton = styled.button`
     color: white;
   `}
 
+  ${props => props.outline && `
+    padding: 8px 25px;
+    background: #6980F3;
+    color: white;
+    border: 2px solid white;
+  `}
+
   ${props => props.disabled && `
     background: #aaa;
     color: white;
@@ -33,6 +40,8 @@ const StyledButton = styled.button`
       transform: translate(0, 0);
     }
   `}
+
+
 `
 
 const Button = (props) => <StyledButton {...props} onClick={(e) => props.disabled ? null : props.onClick(e)}>

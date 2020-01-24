@@ -46,7 +46,13 @@ const Slogan = styled.p`
     max-width: 600px;
   }
 `
+const CTAButtonsContainer = styled.div`
+  display: flex;
 
+  > * {
+    margin-right: 10px;
+  }
+`
 const WhatIsSiftySection = styled.div`
   padding: 20px 0 100px 0;
 
@@ -309,7 +315,10 @@ class LandingPage extends Component {
           </CircleContainer>
           <TextContainer>
             <Slogan>Easy and intuitive way to rank set of images as a group.</Slogan>
-            <Link to="/new-poll"><Button onClick={console.log}>Start</Button></Link>
+            <CTAButtonsContainer>
+              <Link to="/new-poll"><Button onClick={console.log}>Start</Button></Link>
+              <Link to="/polls/1eo7b6mt/vote"><Button outline onClick={console.log}>See demo poll</Button></Link>
+            </CTAButtonsContainer>
           </TextContainer>
         </IntroSection>
         <BlueTriangleContainer>
@@ -361,7 +370,7 @@ class LandingPage extends Component {
           </TextContainer>
         </BenefitsSection>
         <LetsGetStartedSection>
-          <h2>Let's get started</h2>
+          <h2>Let's gestarted</h2>
           <Link to="/new-poll">
             <Button invert onClick={console.log}>Create a poll</Button>
           </Link>

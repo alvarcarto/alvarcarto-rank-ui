@@ -17,6 +17,7 @@ const LogoImg = styled.img`
 `
 
 const Footer = (props) => <FooterContainer>
+  Hosting sposored by
   <a href="https://alvarcarto.com">
     <LogoImg src={`${config.PUBLIC_URL}/assets/alvar-carto-logo-dark.svg`} alt="Alvar Carto" />
   </a>
