@@ -14,6 +14,7 @@ const FooterContainer = styled.div`
 
 const LogoImg = styled.img`
   height: 11px;
+  margin-left: 5px;
 `
 
 const Footer = (props) => <FooterContainer>
