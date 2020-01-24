@@ -338,7 +338,7 @@ class LandingPage extends Component {
             </ul>
             <p>
               Images are sorted based on the lower bound of Wilson score confidence interval for a Bernoulli parameter.
-              <span><b><br />This means you have to do less work sorting and the end result is backed by sophisticated mathematics.</b></span>
+              <span><b><br />This means you have to do less work sorting and the end result is backed by maths.</b></span>
             </p>
           </TextContainer>
         </WhatIsSiftySection>
