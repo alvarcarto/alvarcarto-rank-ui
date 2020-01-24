@@ -370,7 +370,7 @@ class LandingPage extends Component {
           </TextContainer>
         </BenefitsSection>
         <LetsGetStartedSection>
-          <h2>Let's gestarted</h2>
+          <h2>Let's get started</h2>
           <Link to="/new-poll">
             <Button invert onClick={console.log}>Create a poll</Button>
           </Link>
