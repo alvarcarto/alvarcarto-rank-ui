@@ -4,6 +4,7 @@ import Select from 'react-select';
 import styled from 'styled-components'
 import NavBar from '../components/NavBar'
 import RateScale from '../components/RateScale'
+import RankList from '../components/RankList'
 import swal from 'sweetalert2'
 import { getPoll } from '../util/api'
 
@@ -31,10 +32,6 @@ const ResultsSection = styled.div`
 const ImagesSection = styled.div`
   width: 50%;
 
-  p {
-    margin-bottom: 40px;
-  }
-
   :first-child {
     padding-right: 30px;
   }
@@ -42,59 +39,9 @@ const ImagesSection = styled.div`
     padding-left: 30px;
   }
 `
-const Images = styled.ol`
-  list-style: none;
-  margin: 10px 0 50px 0;
-  padding: 0;
 
-  img {
-    max-width: 230px;
-    margin: 5px;
-    border: 2px solid #6880f3;
-    border-radius: 5px;
-  }
-
-  li {
-    counter-increment: item;
-    position: relative;
-    display: flex;
-  }
-
-  li img {
-    align-self: center
-  }
-
-  li:before {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: #6980F3;
-    content: counter(item);
-    background: white;
-    border-radius: 100%;
-    font-weight: bold;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  ${props => props.voteSessionsCount < 1 && `
-    opacity: 0.5;
-
-    li:before {
-      content: "?";
-    }
-  `}
-`
-
-const ImageStats = styled.div`
-  padding: 4px 0 0 10px;
-
-  p {
-    margin: 0;
-  }
+const RankDescription = styled.p`
+  margin-bottom: 40px;
 `
 
 const ComparisonHeader = styled.div`
@@ -141,6 +88,7 @@ class PollResultsPage extends Component {
     if (!poll) {
       return null
     }
+    console.log(poll)
 
     const sortedTargets = _.orderBy(poll.targets, ['score'], ['desc'])
 
@@ -160,22 +108,10 @@ class PollResultsPage extends Component {
               <RankingSection>
                 <ImagesSection>
                   <h2>Ranking list</h2>
-                  <p>{this.getListText(poll)}</p>
-                  <Images voteSessionsCount={poll.voteSessionsCount}>
-                    {
-                      _.map(sortedTargets, (target) => {
-                        return <li key={target.id}>
-                          <img src={target.imageUrl} alt="" />
-                          <ImageStats>
-                            <p>Score: {target.score}</p>
-                            <p>Wins: {target.wins}</p>
-                            <p>Losses: {target.losses}</p>
-                          </ImageStats>
-                        </li>
-                      })
-                    }
-                  </Images>
+                  <RankDescription>{this.getListText(poll)}</RankDescription>
+                  <RankList disabled={poll.voteSessionsCount < 1} targets={sortedTargets} />
                 </ImagesSection>
+                { /*
                 <ImagesSection>
                   <ComparisonHeader>
                     <h2>Compare to</h2>
@@ -193,21 +129,9 @@ class PollResultsPage extends Component {
                     />
                   </ComparisonHeader>
 
-                  <Images voteSessionsCount={poll.voteSessionsCount}>
-                    {
-                      _.map(sortedTargets, (target) => {
-                        return <li key={target.id}>
-                          <img src={target.imageUrl} alt="" />
-                          <ImageStats>
-                            <p>Score: {target.score}</p>
-                            <p>Wins: {target.wins}</p>
-                            <p>Losses: {target.losses}</p>
-                          </ImageStats>
-                        </li>
-                      })
-                    }
-                  </Images>
+                  <RankList disabled={poll.voteSessionsCount < 1} targets={sortedTargets} />
                 </ImagesSection>
+                */ }
               </RankingSection>
             </ResultsSection>
           </TextContainer>
@@ -224,7 +148,7 @@ class PollResultsPage extends Component {
     const count = poll.voteSessions.length
     const names = _.map(poll.voteSessions, s => s.authorName)
 
-    if (!count || count < 1) {
+    if (!count || count < 1) {
       return 'No votes yet. Results will appear after first vote.'
     } else if (count === 1) {
       return `${names[0]} has voted.`

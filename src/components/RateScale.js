@@ -34,13 +34,19 @@ const RateScaleContainer = styled.div`
   }
   li img {
     transition: transform 0.2s ease;
-    border: 2px solid #6980F3;
     border-radius: 3px;
   }
   li img:hover {
     cursor: pointer;
     transform: translateY(-7px);
   }
+`
+
+const ImagePlaceholder = styled.div`
+  background: #eee;
+  height: 100%;
+  width: 100px;
+  border-radius: 3px;
 `
 const ArrowContainer = styled.div`
   width: 100%;
@@ -104,7 +110,11 @@ class RateScale extends Component {
           _.map(targets, target => {
             const style = this.getStyle(target, hasVotes)
             return <li style={style} key={target.id}>
-              <img src={target.imageUrl} alt="" />
+              {
+                hasVotes
+                  ? <img src={target.imageUrl} alt="" />
+                  : <ImagePlaceholder />
+              }
             </li>
           })
         }
@@ -124,7 +134,7 @@ class RateScale extends Component {
       return {
         left: '0%',
         transform: 'translateX(0%)',
-        opacity: hasVotes ? 0 : 0.2,
+        opacity: 1,
       }
     }
 
